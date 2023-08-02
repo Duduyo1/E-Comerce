@@ -112,12 +112,19 @@ function adicionarItens(e){
     adicionarItemCarrinho(nomeCarrinho,precoCarrinho,imagemProduto)
 }
 
+function percorrerProdutos(name){
+    for(let i = 0 ; i < name.length; i++){
+        criarCardProduto(products[i])
+    }
+}
+percorrerProdutos(products)
+
 function secretario(){
     let eventButtonCarrinho = document.querySelectorAll('.btnCarrinho')
     
     for(let i = 0; i<eventButtonCarrinho.length; i++){
-        let seletor = buttonCarrinho[i]
-        seletor.addeventListener('click', adicionarItens())
+        let seletor = eventButtonCarrinho[i]
+        seletor.addeventListener('click', adicionarItens)
     }
 }
 
@@ -126,33 +133,41 @@ secretario()
 let divCarrinhoComProdutos = document.querySelectorAll('.carrinhoComProdutos')[0]
 
 function adicionarItemCarrinho(nome,preco,imagem){
-    console.log(nome,preco,imagem)
 
-    const ul = document.createElement('ul')
-    ul.classList.add('produtosDoCarrinho')
-    let divCarrinhoComProdutos = document.querySelectorAll('.carrinhoComProdutos')[0]
+    let carrinhoUl = document.createElement('ul')
+    carrinhoUl.classList.add('produtosDoCarrinho')
+
     let produtoNoCarrinho = ` 
     <li class = "itemCarrinho">
     <img src = '${imagem}' >
     </li>
-    <li class = 'descricaoProduto'>
+    <li>
+    <ul class = 'descricaoProduto'>
     <li class = 'tituloProduto'>'${nome}'</li>
     <li class = 'precoProduto'>${preco}</li>
     <li class = 'removerProduto'>
-    <button value = 1> Remover Produto </button>
-    </li>
+    <button value = 1> Remover Produto </button></li>
+    </ul>
     </li>
     `
-    produtosDoCarrinho.innerHTML = produtoNoCarrinho
-    divCarrinhoComProdutos.append('.produtosDoCarrinho')
+    carrinhoUl.innerHTML = produtoNoCarrinho
+    divCarrinhoComProdutos.append('carrinhoUl')
 }
 
-
-function percorrerProdutos(name){
-    for(let i = 0 ; i < name.length; i++){
-        criarCardProduto(products[i])
-        arrayProdutos.push(products[i])
+function removerSomente(){
+    let capturaRemover = document.querySelectorAll('.removerProduto')
+    console.log(capturaRemover)
+    for(let i = 0; i<capturaRemover.length; i++){
+        let seletor2 = capturaRemover[i]
+        seletor2.addEventListener('click', deletorProduto)
     }
 }
-percorrerProdutos(products)
 
+function deletorProduto (event){
+    let excluir = event.target
+    let child1 = excluir.parentNode;
+    let child2 = child1.parentNode;
+    let child3 = child2.parentNode;
+    let child4 = child3.parentNode;
+    child4.remove()
+}
