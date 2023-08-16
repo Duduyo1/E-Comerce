@@ -80,8 +80,7 @@ function criarCardProduto(products){
     body.appendChild(main)
     main.appendChild(divProdutos)
     divProdutos.classList.add('itemLista')
-    divProdutos.append(figure,buttonSecao,nomeProduto,descricaoProduto)
-    divProdutos.appendChild(valorEButtonCarrinho)
+    divProdutos.append(figure,buttonSecao,nomeProduto,descricaoProduto, valorEButtonCarrinho)
     valorEButtonCarrinho.classList.add('btnEValor')
     imgCarrinho.classList.add('iconeCarrinho')
     valorEButtonCarrinho.append(valorProduto,buttonCarrinho)
@@ -103,17 +102,16 @@ const arrayProdutos =[]
 function adicionarItens(e){
     let item = e.target
     
-
-    let adicionarItens = item.parentElement
-    let precoCarrinho = addItem.querySelector(".valorProduto").innerText
-    let nomeCarrinho = addItem.querySelector('.nomeProduto').innerText
-    let imagemProduto = addItem.querySelector('.imagemProduto').src
+    let adicionarItem = item.parentElement;
+    let precoCarrinho = adicionarItem.querySelector(".valorProduto").innerText;
+    let nomeCarrinho = adicionarItem.querySelector('.nomeProduto').innerText;
+    let imagemProduto = adicionarItem.querySelector('.imagemProduto').src;
 
     adicionarItemCarrinho(nomeCarrinho,precoCarrinho,imagemProduto)
 }
 
-function percorrerProdutos(name){
-    for(let i = 0 ; i < name.length; i++){
+function percorrerProdutos(products){
+    for(let i = 0 ; i < products.length; i++){
         criarCardProduto(products[i])
     }
 }
@@ -124,11 +122,12 @@ function secretario(){
     
     for(let i = 0; i<eventButtonCarrinho.length; i++){
         let seletor = eventButtonCarrinho[i]
-        seletor.addeventListener('click', adicionarItens)
+        seletor.addEventListener('click', adicionarItens)
     }
 }
 
 secretario()
+
 
 let divCarrinhoComProdutos = document.querySelectorAll('.carrinhoComProdutos')[0]
 
@@ -136,22 +135,23 @@ function adicionarItemCarrinho(nome,preco,imagem){
 
     let carrinhoUl = document.createElement('ul')
     carrinhoUl.classList.add('produtosDoCarrinho')
-
+    let divCarrinhoComProdutos = document.querySelectorAll('.carrinhoComProdutos')[0]
     let produtoNoCarrinho = ` 
     <li class = "itemCarrinho">
     <img src = '${imagem}' >
     </li>
     <li>
     <ul class = 'descricaoProduto'>
-    <li class = 'tituloProduto'>'${nome}'</li>
-    <li class = 'precoProduto'>${preco}</li>
+    <li class = 'tituloProduto'>${nome}</li>
+    <li class = 'precoProduto'>${preco}</li>   
     <li class = 'removerProduto'>
     <button value = 1> Remover Produto </button></li>
     </ul>
     </li>
     `
     carrinhoUl.innerHTML = produtoNoCarrinho
-    divCarrinhoComProdutos.append('carrinhoUl')
+    divCarrinhoComProdutos.append(carrinhoUl)
+    removerSomente()
 }
 
 function removerSomente(){
@@ -171,3 +171,8 @@ function deletorProduto (event){
     let child4 = child3.parentNode;
     child4.remove()
 }
+
+document.addEventListener('DOMContentLoaded', function(){
+    percorrerProdutos(products)
+    secretario()
+})
